@@ -13,9 +13,22 @@ use RuntimeException;
 use function Safe\unpack;
 use const STR_PAD_LEFT;
 
-abstract class OTP implements OTPInterface
+abstract class OTP
 {
     use ParameterTrait;
+
+    abstract public static function create(null|string $secret = null): self;
+
+    /**
+     * Verify that the OTP is valid with the specified input. If no input is provided, the input is set to a default
+     * value or false is returned.
+     */
+    abstract public function verify(string $otp, null|int $timestamp = null): bool;
+
+    /**
+     * Get the provisioning URI.
+     */
+    abstract public function getProvisioningUri(): string;
 
     protected function __construct(null|string $secret, string $digest, int $digits)
     {
@@ -31,6 +44,9 @@ abstract class OTP implements OTPInterface
         return str_replace($placeholder, $provisioning_uri, $uri);
     }
 
+    /**
+     * @return string Return the OTP at the specified timestamp
+     */
     public function at(int $input): string
     {
         return $this->generateOTP($input);

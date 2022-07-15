@@ -12,9 +12,13 @@ use Throwable;
 /**
  * This class is used to load OTP object from a provisioning Uri.
  */
-final class Factory implements FactoryInterface
+final class Factory
 {
-    public static function loadFromProvisioningUri(string $uri): OTPInterface
+    /**
+     * This method is the unique public method of the class. It can load a provisioning Uri and convert it into an OTP
+     * object.
+     */
+    public static function loadFromProvisioningUri(string $uri): OTP
     {
         try {
             $parsed_url = Url::fromString($uri);
@@ -30,14 +34,14 @@ final class Factory implements FactoryInterface
         return $otp;
     }
 
-    private static function populateParameters(OTPInterface $otp, Url $data): void
+    private static function populateParameters(OTP $otp, Url $data): void
     {
         foreach ($data->getQuery() as $key => $value) {
             $otp->setParameter($key, $value);
         }
     }
 
-    private static function populateOTP(OTPInterface $otp, Url $data): void
+    private static function populateOTP(OTP $otp, Url $data): void
     {
         self::populateParameters($otp, $data);
         $result = explode(':', rawurldecode(mb_substr($data->getPath(), 1)));
@@ -55,7 +59,7 @@ final class Factory implements FactoryInterface
         $otp->setIssuer($result[0]);
     }
 
-    private static function createOTP(Url $parsed_url): OTPInterface
+    private static function createOTP(Url $parsed_url): OTP
     {
         switch ($parsed_url->getHost()) {
             case 'totp':

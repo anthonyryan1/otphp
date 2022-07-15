@@ -36,6 +36,9 @@ trait ParameterTrait
         return $parameters;
     }
 
+    /**
+     * @return string The secret of the OTP
+     */
     public function getSecret(): string
     {
         $value = $this->getParameter('secret');
@@ -44,16 +47,25 @@ trait ParameterTrait
         return $value;
     }
 
+    /**
+     * @return string|null The label of the OTP
+     */
     public function getLabel(): null|string
     {
         return $this->label;
     }
 
+    /**
+     * @param string $label The label of the OTP
+     */
     public function setLabel(string $label): void
     {
         $this->setParameter('label', $label);
     }
 
+    /**
+     * @return string|null The issuer
+     */
     public function getIssuer(): null|string
     {
         return $this->issuer;
@@ -64,6 +76,9 @@ trait ParameterTrait
         $this->setParameter('issuer', $issuer);
     }
 
+    /**
+     * @return bool If true, the issuer will be added as a parameter in the provisioning URI
+     */
     public function isIssuerIncludedAsParameter(): bool
     {
         return $this->issuer_included_as_parameter;
@@ -74,6 +89,9 @@ trait ParameterTrait
         $this->issuer_included_as_parameter = $issuer_included_as_parameter;
     }
 
+    /**
+     * @return int Number of digits in the OTP
+     */
     public function getDigits(): int
     {
         $value = $this->getParameter('digits');
@@ -82,6 +100,9 @@ trait ParameterTrait
         return $value;
     }
 
+    /**
+     * @return string Digest algorithm used to calculate the OTP. Possible values are 'md5', 'sha1', 'sha256' and 'sha512'
+     */
     public function getDigest(): string
     {
         $value = $this->getParameter('algorithm');

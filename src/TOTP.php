@@ -6,7 +6,7 @@ namespace OTPHP;
 
 use Assert\Assertion;
 
-final class TOTP extends OTP implements TOTPInterface
+final class TOTP extends OTP
 {
     protected function __construct(null|string $secret, int $period, string $digest, int $digits, int $epoch = 0)
     {
@@ -15,6 +15,11 @@ final class TOTP extends OTP implements TOTPInterface
         $this->setEpoch($epoch);
     }
 
+    /**
+     * Create a new TOTP object.
+     *
+     * If the secret is null, a random 64 bytes secret will be generated.
+     */
     public static function create(
         null|string $secret = null,
         int $period = 30,
@@ -25,6 +30,9 @@ final class TOTP extends OTP implements TOTPInterface
         return new self($secret, $period, $digest, $digits, $epoch);
     }
 
+    /**
+     * Get the period of time for OTP generation (a non-null positive integer, in second).
+     */
     public function getPeriod(): int
     {
         $value = $this->getParameter('period');
@@ -53,6 +61,9 @@ final class TOTP extends OTP implements TOTPInterface
         return $this->generateOTP($this->timecode($input));
     }
 
+    /**
+     * Return the TOTP at the current time.
+     */
     public function now(): string
     {
         return $this->at(time());

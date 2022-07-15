@@ -6,7 +6,7 @@ namespace OTPHP;
 
 use Assert\Assertion;
 
-final class HOTP extends OTP implements HOTPInterface
+final class HOTP extends OTP
 {
     protected function __construct(null|string $secret, int $counter, string $digest, int $digits)
     {
@@ -14,15 +14,23 @@ final class HOTP extends OTP implements HOTPInterface
         $this->setCounter($counter);
     }
 
+    /**
+     * Create a new TOTP object.
+     *
+     * If the secret is null, a random 64 bytes secret will be generated.
+     */
     public static function create(
         null|string $secret = null,
         int $counter = 0,
         string $digest = 'sha1',
         int $digits = 6
-    ): HOTPInterface {
+    ): self {
         return new self($secret, $counter, $digest, $digits);
     }
 
+    /**
+     * The initial counter (a positive integer).
+     */
     public function getCounter(): int
     {
         $value = $this->getParameter('counter');
